@@ -9,4 +9,7 @@ app.use("/", homeRoute);
 app.use(cors());
 app.use(bodyParser.json());
 
+const authRoute = require("./routes/authRoute");
+app.use("/auth", authRoute);
+
 module.exports = { app };
