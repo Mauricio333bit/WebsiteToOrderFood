@@ -11,5 +11,5 @@ const eventSchema = new mongoose.Schema({
   location: String,
 });
 
-const Event = mongoose.Model("Event", eventSchema);
+const Event = mongoose.model("Event", eventSchema);
 module.exports = Event;

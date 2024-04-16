@@ -8,6 +8,6 @@ const CategorySchema = new moongose.Schema({
   },
 });
 
-const Category = moongose.Model("Category", CategorySchema);
+const Category = moongose.model("Category", CategorySchema);
 
 module.exports = Category;

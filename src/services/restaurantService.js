@@ -80,7 +80,7 @@ module.exports = {
   async searchRestaurant(keyword) {
     try {
       //$regex mongo db  method to perform a regular expression search on a field
-      const restaurant = await Restaurant.find({
+      const restaurants = await Restaurant.find({
         or: [
           {
             name: { $regex: keyword, $options: "i" },
@@ -89,6 +89,44 @@ module.exports = {
           },
         ],
       });
+      return restaurants;
     } catch (error) {}
+  },
+  async addToFavorite(restaurantId, user) {
+    try {
+      const restaurant = await Restaurant.findRestaurantById(restaurantId);
+      const dtoFavorite = {
+        _id: restaurant._id,
+        title: restaurant.name,
+        description: restaurant.description,
+        image: restaurant.image,
+      };
+      const favorites = user.favorites || [];
+      const index = favorites.findIndex(
+        (favorites) => favorites._id === restaurantId
+      );
+      if (index !== -1) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(dtoFavorite);
+      }
+      user.favorites = favorites;
+      await user.save();
+      return dtoFavorite;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  async updateRestaurantStatus(restaurantId) {
+    try {
+      const restaurant = await Restaurant.findById(restaurantId)
+        .populate("owner")
+        .populate("address");
+      restaurant.open = !restaurant.open;
+      await restaurant.save();
+      return restaurant;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   },
 };

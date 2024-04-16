@@ -16,3 +16,4 @@ const IngredientCategory = mongoose.model(
   "IngredientsCategory",
   IngredientCategorySchema
 );
+module.exports = IngredientCategory;
