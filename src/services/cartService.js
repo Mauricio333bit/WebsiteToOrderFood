@@ -5,6 +5,7 @@ const Food = require("../models/foodModel");
 module.exports = {
   async createCart(user) {
     try {
+      //crear carrito de compra y guardar
       const cart = new Cart({ costumer: user });
       const createdCart = await cart.save();
       return createdCart;

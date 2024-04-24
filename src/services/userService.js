@@ -35,7 +35,7 @@ module.exports = {
   },
   async findUserById(id) {
     try {
-      const user = await User.findById(id).populate("addresses");
+      const user = await User.findById(id);
       if (!user) {
         throw new Error("No user with this id: " + id);
       }
@@ -47,7 +47,7 @@ module.exports = {
   async findUserProfileByJwt(jwt) {
     try {
       const userId = getUserIdFromToken(jwt);
-      const user = await User.findById(userId);
+      const user = await this.findUserById(userId);
 
       return user;
     } catch (error) {

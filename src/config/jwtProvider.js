@@ -11,6 +11,6 @@ const generateToken = (userId) => {
 
 const getUserIdFromToken = (token) => {
   const decodedToken = jwt.verify(token, SECRET_KEY);
-  return decodedToken.userId;
+  return decodedToken.id;
 };
 module.exports = { generateToken, getUserIdFromToken };

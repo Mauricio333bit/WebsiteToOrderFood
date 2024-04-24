@@ -1,7 +1,7 @@
 const { getUserIdFromToken } = require("../config/jwtProvider");
 const Address = require("../models/addressModel");
 const Restaurant = require("../models/restaurantModel");
-const Restaurant = require("../models/restaurantModel");
+
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 

@@ -43,18 +43,76 @@ module.exports = {
         costumer: user._id,
         restaurant: restaurant._id,
         totalAmount: totalPrice,
-        orderStatus: "Pending",
+        orderStatus: "PENDING",
         createdAt: new Date(),
         deliveryAddress: saveAddress?._id,
         items: orderItems,
       });
       const saveOrder = await createOrder.save();
+      restaurant.orders.push(saveOrder._id);
       await restaurant.save();
       return saveOrder;
       //   const paymentResponse = await paymentService.generatePaymentLink(
       //     saveOrder
       //   );
       //   return paymentResponse;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  async cancelOrder(orderId) {
+    try {
+      await Order.findByIdAndDelete(orderId);
+    } catch (error) {
+      throw new Error(
+        "Failed to cancel order with  id " + orderId + error.message
+      );
+    }
+  },
+  async findOrderById(orderId) {
+    try {
+      const order = await Order.findById(orderId);
+      if (!order) throw new Error("No order found with id: " + orderId);
+
+      return order;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+  async getUserOrders(userId) {
+    try {
+      const orders = await Order.find({ costumer: userId });
+      return orders;
+    } catch (error) {
+      throw new Error("Error getting the user orders");
+    }
+  },
+  async getRestaurantOrders(restaurantId, orderStatus) {
+    try {
+      const orders = await Order.find({ restaurant: restaurantId });
+      if (orderStatus) {
+        orders = orders.filter((order) => order.orderStatus === orderStatus);
+      }
+      return orders;
+    } catch (error) {
+      throw new Error(
+        "Error getting the restaurant orders. Id: " + restaurantId
+      );
+    }
+  },
+  async updateOrderStatus(orderId, orderStatus) {
+    try {
+      const validStatus = [
+        "OUT_FOR_DELIVERY",
+        "DELIVERED",
+        "COMPLETED",
+        "PENDING",
+      ];
+      if (!validStatus.includes(orderStatus)) throw new Error("Invalid status");
+
+      const updatedOrder = await Order.findById(orderId);
+      updatedOrder.orderStatus = orderStatus;
+      await updatedOrder.save();
     } catch (error) {}
   },
 };

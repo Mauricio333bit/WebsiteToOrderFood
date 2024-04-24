@@ -75,7 +75,7 @@ module.exports = {
   },
   findRestaurantById: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { id } = req.params; //esto tiene que coincidir con el nombre que le ponemos en la ruta /:id
       const restaurant = await restaurantService.findRestaurantById(id);
       res.status(200).json(restaurant);
     } catch (error) {
