@@ -29,7 +29,7 @@ module.exports = {
   },
   deleteEvent: async (req, res) => {
     try {
-      const eventId = req.params;
+      const { eventId } = req.params;
       await eventService.deleteEvent(eventId);
       res.status(204).json({ message: "Event deleted" });
     } catch (error) {
